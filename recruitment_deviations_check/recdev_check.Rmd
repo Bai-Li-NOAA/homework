@@ -99,20 +99,21 @@ legend("bottomleft",
 ## Plot recruitment deviations over years from 5 iteration runs
 
 ``` {r annual_recdev}
-iter_id <- sample(1:iter_num, 5, replace=F)
-for (i in 1:length(iter_id)){
-  plot(om[iter_id[i], ], 
-       xlab="Year",
-       ylab="Rec Dev")
-  lines(bam[iter_id[i], ], lty=2, col=2)
-  lines(asap[iter_id[i], ], lty=3, col=3)
-  legend("topleft", 
-         c("OM", "BAM", "ASAP"),
-         lty=c(NA, 1, 2),
-         pch=c(1, NA, NA),
-         title = paste("Iteration", iter_id[i]), 
-         bty="n"
-         )
+iter_id <- sample(1:iter_num, 5, replace = F)
+for (i in 1:length(iter_id)) {
+  plot(om[iter_id[i], ],
+    xlab = "Year",
+    ylab = "Rec Dev"
+  )
+  lines(bam[iter_id[i], ], lty = 2, col = 2)
+  lines(asap[iter_id[i], ], lty = 3, col = 3)
+  legend("topleft",
+    c("OM", "BAM", "ASAP"),
+    lty = c(NA, 1, 2),
+    pch = c(1, NA, NA),
+    title = paste("Iteration", iter_id[i]),
+    bty = "n"
+  )
 }
 ```
 
@@ -128,15 +129,15 @@ nyr <- 30
 om <- mas <- matrix(NA, nrow = iter_num, ncol = nyr)
 
 for (iter in 1:iter_num) {
-  
+
   # load OM recruitment deviations
   load(file.path(mas_dir, case_id, "output", "OM", paste0("OM", iter, ".RData")))
   om[iter, ] <- om_input$logR.resid
-  
+
   # load MAS recruitment deviations
   output_file <- file.path(mas_dir, case_id, "output", "MAS", paste0("s", iter), paste0("s", iter, ".json"))
   mas_output <- jsonlite::read_json(output_file)
-  
+
   parameter <- unlist(mas_output$estimated_parameters$parameters)
   parameter_table <- as.data.frame(matrix(parameter, ncol = 3, byrow = TRUE))
   colnames(parameter_table) <- c(
@@ -145,7 +146,6 @@ for (iter in 1:iter_num) {
     "Gradient"
   )
   mas[iter, ] <- as.numeric(parameter_table[grep("recruitment_deviations", parameter_table$Parameter), "Value"])
-  
 }
 
 om_mean <- apply(om, 1, mean)
@@ -158,51 +158,50 @@ om_sum <- apply(om, 1, sum)
 mas_sum <- apply(mas, 1, sum)
 
 plot(om_mean,
-     xlab = "Iterations",
-     ylab = "Rec Dev Mean",
-     pch = 1
+  xlab = "Iterations",
+  ylab = "Rec Dev Mean",
+  pch = 1
 )
 lines(mas_mean, lty = 2, co = 2)
 legend("bottomleft",
-       c("OM", "MAS"),
-       lty = c(NA, 2),
-       col = 1:2,
-       pch = c(1, NA),
-       bty = "n"
+  c("OM", "MAS"),
+  lty = c(NA, 2),
+  col = 1:2,
+  pch = c(1, NA),
+  bty = "n"
 )
 
 plot(om_sd,
-     xlab = "Iterations",
-     ylab = "Rec Dev SD"
+  xlab = "Iterations",
+  ylab = "Rec Dev SD"
 )
 lines(mas_sd, lty = 2, co = 2)
 legend("bottomleft",
-       c("OM", "MAS"),
-       lty = c(NA, 2),
-       col = 1:2,
-       pch = c(1, NA),
-       bty = "n"
+  c("OM", "MAS"),
+  lty = c(NA, 2),
+  col = 1:2,
+  pch = c(1, NA),
+  bty = "n"
 )
 
 plot(om_sum,
-     xlab = "Iterations",
-     ylab = "Rec Dev Sum"
+  xlab = "Iterations",
+  ylab = "Rec Dev Sum"
 )
 lines(mas_sum, lty = 2, co = 2)
 legend("bottomleft",
-       c("OM", "MAS"),
-       lty = c(NA, 2),
-       col = 1:2,
-       pch = c(1, NA),
-       bty = "n"
+  c("OM", "MAS"),
+  lty = c(NA, 2),
+  col = 1:2,
+  pch = c(1, NA),
+  bty = "n"
 )
-
 ```
 
 ## Questions
 - Does the constrained normal distribution help EM gets accurate estimates? 
 
-- Does the OM need to simulate data that exactly satisfy a set of constraint?
+- Does the OM need to simulate data that exactly satisfy a set of constraints?
 
   - `mvrnorm` from `MASS` in R allows you to simulate multivariate normal data with a pre-specified sample mean and covariance by setting `empirical=TRUE` 
   

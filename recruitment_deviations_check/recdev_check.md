@@ -94,20 +94,21 @@
 
 ## Plot recruitment deviations over years from 5 iteration runs
 
-    iter_id <- sample(1:iter_num, 5, replace=F)
-    for (i in 1:length(iter_id)){
-      plot(om[iter_id[i], ], 
-           xlab="Year",
-           ylab="Rec Dev")
-      lines(bam[iter_id[i], ], lty=2, col=2)
-      lines(asap[iter_id[i], ], lty=3, col=3)
-      legend("topleft", 
-             c("OM", "BAM", "ASAP"),
-             lty=c(NA, 1, 2),
-             pch=c(1, NA, NA),
-             title = paste("Iteration", iter_id[i]), 
-             bty="n"
-             )
+    iter_id <- sample(1:iter_num, 5, replace = F)
+    for (i in 1:length(iter_id)) {
+      plot(om[iter_id[i], ],
+        xlab = "Year",
+        ylab = "Rec Dev"
+      )
+      lines(bam[iter_id[i], ], lty = 2, col = 2)
+      lines(asap[iter_id[i], ], lty = 3, col = 3)
+      legend("topleft",
+        c("OM", "BAM", "ASAP"),
+        lty = c(NA, 1, 2),
+        pch = c(1, NA, NA),
+        title = paste("Iteration", iter_id[i]),
+        bty = "n"
+      )
     }
 
 ![](recdev_check_files/figure-markdown_strict/annual_recdev-1.png)![](recdev_check_files/figure-markdown_strict/annual_recdev-2.png)![](recdev_check_files/figure-markdown_strict/annual_recdev-3.png)![](recdev_check_files/figure-markdown_strict/annual_recdev-4.png)![](recdev_check_files/figure-markdown_strict/annual_recdev-5.png)
@@ -123,15 +124,15 @@
     om <- mas <- matrix(NA, nrow = iter_num, ncol = nyr)
 
     for (iter in 1:iter_num) {
-      
+
       # load OM recruitment deviations
       load(file.path(mas_dir, case_id, "output", "OM", paste0("OM", iter, ".RData")))
       om[iter, ] <- om_input$logR.resid
-      
+
       # load MAS recruitment deviations
       output_file <- file.path(mas_dir, case_id, "output", "MAS", paste0("s", iter), paste0("s", iter, ".json"))
       mas_output <- jsonlite::read_json(output_file)
-      
+
       parameter <- unlist(mas_output$estimated_parameters$parameters)
       parameter_table <- as.data.frame(matrix(parameter, ncol = 3, byrow = TRUE))
       colnames(parameter_table) <- c(
@@ -140,7 +141,6 @@
         "Gradient"
       )
       mas[iter, ] <- as.numeric(parameter_table[grep("recruitment_deviations", parameter_table$Parameter), "Value"])
-      
     }
 
     om_mean <- apply(om, 1, mean)
@@ -153,47 +153,47 @@
     mas_sum <- apply(mas, 1, sum)
 
     plot(om_mean,
-         xlab = "Iterations",
-         ylab = "Rec Dev Mean",
-         pch = 1
+      xlab = "Iterations",
+      ylab = "Rec Dev Mean",
+      pch = 1
     )
     lines(mas_mean, lty = 2, co = 2)
     legend("bottomleft",
-           c("OM", "MAS"),
-           lty = c(NA, 2),
-           col = 1:2,
-           pch = c(1, NA),
-           bty = "n"
+      c("OM", "MAS"),
+      lty = c(NA, 2),
+      col = 1:2,
+      pch = c(1, NA),
+      bty = "n"
     )
 
 ![](recdev_check_files/figure-markdown_strict/mas_recdev-1.png)
 
     plot(om_sd,
-         xlab = "Iterations",
-         ylab = "Rec Dev SD"
+      xlab = "Iterations",
+      ylab = "Rec Dev SD"
     )
     lines(mas_sd, lty = 2, co = 2)
     legend("bottomleft",
-           c("OM", "MAS"),
-           lty = c(NA, 2),
-           col = 1:2,
-           pch = c(1, NA),
-           bty = "n"
+      c("OM", "MAS"),
+      lty = c(NA, 2),
+      col = 1:2,
+      pch = c(1, NA),
+      bty = "n"
     )
 
 ![](recdev_check_files/figure-markdown_strict/mas_recdev-2.png)
 
     plot(om_sum,
-         xlab = "Iterations",
-         ylab = "Rec Dev Sum"
+      xlab = "Iterations",
+      ylab = "Rec Dev Sum"
     )
     lines(mas_sum, lty = 2, co = 2)
     legend("bottomleft",
-           c("OM", "MAS"),
-           lty = c(NA, 2),
-           col = 1:2,
-           pch = c(1, NA),
-           bty = "n"
+      c("OM", "MAS"),
+      lty = c(NA, 2),
+      col = 1:2,
+      pch = c(1, NA),
+      bty = "n"
     )
 
 ![](recdev_check_files/figure-markdown_strict/mas_recdev-3.png)
@@ -204,7 +204,7 @@
     estimates?
 
 -   Does the OM need to simulate data that exactly satisfy a set of
-    constraint?
+    constraints?
 
     -   `mvrnorm` from `MASS` in R allows you to simulate multivariate
         normal data with a pre-specified sample mean and covariance by
