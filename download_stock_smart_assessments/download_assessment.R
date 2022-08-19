@@ -34,7 +34,7 @@ ifelse(!dir.exists(unzip_dir), dir.create(unzip_dir), FALSE)
 unzip(zip_file, exdir = unzip_dir)
 
 # Unzipping produces a bunch of files which we can read using the XML
-# package assume sheet1 has our data
+# Assume sheet1 has our data
 filename <- "sheet1.xml.rels"
 rel_path <- file.path(unzip_dir, "xl", "worksheets", "_rels", filename)
 rel <- XML::xmlParse(rel_path)
