@@ -8,11 +8,11 @@ body:
   - type: textarea
     id: welcome-message
     attributes:
-      label: :clap: Welcome Message :clap:
+      label: Welcome Message 
       description: Welcome message to the new team member, including brief
         instructions on how to use this issue template. Don't modify.
       value: |
-        Welcome! [The README](https://github.com/nmfs-ost/on-off-boarding) 
+        :clap: Welcome! :clap: [The README](https://github.com/nmfs-ost/on-off-boarding) 
         describes the onboarding process for new team members of the National 
         Stock Assessment Program (NSAP). Below are the checklist items that will 
         drive the onboarding process.
