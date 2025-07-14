@@ -5,20 +5,6 @@ labels: ["onboarding"]
 assignees: ["Bai-Li-NOAA"]
 
 body:
-  - type: textarea
-    id: welcome-message
-    attributes:
-      label: Welcome Message 
-      description: Welcome message to the new team member, including brief
-        instructions on how to use this issue template. Don't modify.
-      value: |
-        :clap: Welcome! :clap: [The README](https://github.com/nmfs-ost/on-off-boarding) 
-        describes the onboarding process for new team members of the National 
-        Stock Assessment Program (NSAP). Below are the checklist items that will 
-        drive the onboarding process.
-    validations:
-      required: false 
-
   - type: input
     id: user-name
     attributes:
@@ -47,14 +33,27 @@ body:
       required: true
 
   - type: textarea
+    id: welcome-message
+    attributes:
+      label: Welcome Message 
+      description: Welcome message to the new team member, including brief
+        instructions on how to use this issue template. Don't modify.
+      value: |
+        :clap: Welcome! :clap: [The README](https://github.com/nmfs-ost/on-off-boarding) 
+        describes the onboarding process for new team members of the National 
+        Stock Assessment Program (NSAP). Below are the checklist items that will 
+        drive the onboarding process.
+    validations:
+      required: false 
+
+  - type: textarea
     id: nsap-checklist
     attributes:
       label: NSAP Onboarding Checklist
       description: This is a checklist of tasks to be completed during the 
         onboarding process. Don't modify.
       value: |
-        # Onboarding Task Checklist
-        Please indicate the status and completion for each relevant onboarding task.
+        :clap: Welcome! :clap: Below are the checklist items that will drive the onboarding process. Please indicate the status and completion for each relevant onboarding task.
 
         ## Assignee: Assessment Branch Director (Acting) @Bai-Li-NOAA
         - [x] **Create an onboarding issue on GitHub [First Day]**: Create a new 
