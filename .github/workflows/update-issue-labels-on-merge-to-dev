@@ -1,0 +1,73 @@
+name: Update Issue Labels on Merge to Dev
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  update-issue-labels:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'dev'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get linked issues
+        id: linked
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issues = await github.rest.issues.listEventsForTimeline({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              per_page: 100
+            });
+
+            // Find linked issues via "connected" or "referenced" events
+            const linked = issues.data
+              .filter(event => event.source && event.source.issue)
+              .map(event => event.source.issue.number);
+
+            return { linked: [...new Set(linked)] };
+
+      - name: Update labels on linked issues
+        if: steps.linked.outputs.linked != '[]'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const linkedIssues = JSON.parse(steps.linked.outputs.linked);
+            for (const issue of linkedIssues) {
+              console.log(`Processing issue #${issue}`);
+
+              // Get current labels
+              const { data: issueData } = await github.rest.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue,
+              });
+
+              const labels = issueData.labels.map(l => l.name);
+
+              // Remove "status: in progress" if present
+              if (labels.includes("status: in progress")) {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue,
+                  name: "status: in progress"
+                }).catch(err => {
+                  if (err.status !== 404) throw err;
+                });
+              }
+
+              // Add "status: in dev" if not already present
+              if (!labels.includes("status: in dev")) {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue,
+                  labels: ["status: in dev"]
+                });
+              }
+            }
