@@ -10,52 +10,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get linked issues
-        id: linked
+      - name: Update linked issue labels
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const issues = await github.rest.issues.listEventsForTimeline({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
-              per_page: 100
-            });
+            const prNumber = context.payload.pull_request.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
 
-            // Find linked issues via "connected" or "referenced" events
-            const linked = issues.data
-              .filter(event => event.source && event.source.issue)
-              .map(event => event.source.issue.number);
+            // 1. Get PR body
+            const pr = await github.rest.pulls.get({ owner, repo, pull_number: prNumber });
+            const prBody = pr.data.body || "";
 
-            return { linked: [...new Set(linked)] };
+            // 2. Find all linked issues using #123 syntax
+            const issueNumbers = Array.from(prBody.matchAll(/#(\d+)/g)).map(m => parseInt(m[1]));
 
-      - name: Update labels on linked issues
-        if: steps.linked.outputs.linked != '[]'
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const linkedIssues = JSON.parse(steps.linked.outputs.linked);
-            for (const issue of linkedIssues) {
-              console.log(`Processing issue #${issue}`);
+            if (issueNumbers.length === 0) {
+              console.log("No linked issues found in PR body.");
+              return;
+            }
+
+            // 3. Update each issue
+            for (const issueNumber of issueNumbers) {
+              console.log(`Processing issue #${issueNumber}`);
 
               // Get current labels
-              const { data: issueData } = await github.rest.issues.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue,
+              const { data: issue } = await github.rest.issues.get({
+                owner,
+                repo,
+                issue_number: issueNumber,
               });
 
-              const labels = issueData.labels.map(l => l.name);
+              const labels = issue.labels.map(l => l.name);
 
-              // Remove "status: in progress" if present
+              // Remove "status: in progress" if exists
               if (labels.includes("status: in progress")) {
                 await github.rest.issues.removeLabel({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issue,
-                  name: "status: in progress"
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  name: "status: in progress",
                 }).catch(err => {
                   if (err.status !== 404) throw err;
                 });
@@ -64,10 +59,12 @@ jobs:
               // Add "status: in dev" if not already present
               if (!labels.includes("status: in dev")) {
                 await github.rest.issues.addLabels({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issue,
-                  labels: ["status: in dev"]
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  labels: ["status: in dev"],
                 });
               }
             }
+
+            console.log("Finished updating labels for linked issues.");
