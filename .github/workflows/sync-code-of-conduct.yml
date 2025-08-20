@@ -27,7 +27,7 @@ jobs:
       # Modify the downloaded file with custom details
       - name: Modify Enforcement Section
         run: |
-          sed -i 's|enforcement at fisheries.toolbox@noaa.gov or to report anonymously, use [this form](https://forms.gle/iNnmZFS9vwy29gb49).|enforcement at YOUR_EMAIL@example.com.|g' CODE_OF_CONDUCT.md
+          sed -i 's|enforcement at.*|enforcement at YOUR_EMAIL@example.com.|' CODE_OF_CONDUCT.md
 
       # Check for changes, and if there are any, commit and push them
       - name: Commit and Push if Changed
