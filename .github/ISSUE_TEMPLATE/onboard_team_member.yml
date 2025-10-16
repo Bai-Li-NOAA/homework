@@ -1,115 +1,102 @@
-name: Onboard team member
-description: Checklist for onboarding a new team member to National Stock Assessment Program.
-title: "[Onboard]: <name>"
-labels: ["onboarding"]
-assignees: ["Bai-Li-NOAA"]
+name: Add new profile
+description: Use this template to submit information for a new collaborator profile and track their progress.
+title: "[Profile]: <full name>"
+labels: ["profile"]
 
 body:
-  - type: input
-    id: user-name
+  - type: markdown
     attributes:
-      label: Team Member Name
-      description: The full name of the team member being onboarded.
-      placeholder: Ex. Jane Doe
-    validations:
-      required: true
+      value: |
+        # :warning: Read Before Proceeding :warning:
 
-  - type: input
-    id: start-date
-    attributes:
-      label: Desired Start Date
-      description: When should the onboarding process begin? (e.g., YYYY-MM-DD)
-      placeholder: Ex. 2025-07-15
-    validations:
-      required: true
-
-  - type: textarea
-    id: role-description
-    attributes:
-      label: Team Member's Role and Department
-      description: Briefly describe the team member's role and which department they will be joining.
-      placeholder: Ex. Software Engineer, ST4 National Stock Assessment Program
-    validations:
-      required: true
+        Please ask the collaborator if they are comfortable with announcing their onboarding and offboarding to the team via a GitHub Issue BEFORE filling out this Issue Template. This repository is public and they might not want to announce their future position until a certain date or they might prefer to use email instead of GitHub to track their onboarding and offboarding. 
 
   - type: textarea
     id: welcome-message
     attributes:
       label: Welcome Message 
-      description: Welcome message to the new team member, including brief
-        instructions on how to use this issue template. Don't modify.
+      description: Do not modify. This is a pre-filled welcome message for the collaborator, including brief instructions on how to use this issue template.
       value: |
-        :clap: Welcome! :clap: [The README](https://github.com/nmfs-ost/on-off-boarding) 
-        describes the onboarding process for new team members of the National 
-        Stock Assessment Program (NSAP). Below are the checklist items that will 
-        drive the onboarding process.
+        :clap: Welcome! :clap: [The README](https://github.com/nmfs-ost/on-off-boarding) describes the onboarding and offboarding processes for new collaborators of the Office of Science and Technology (OST). 
+        Please feel free to email your Supervisor or Project Lead if you prefer to use email instead of this GitHub issue to track your onboarding and offboarding progress.
     validations:
       required: false 
 
-  - type: textarea
-    id: nsap-checklist
+  - type: input
+    id: profile-name
     attributes:
-      label: NSAP Onboarding Checklist
-      description: This is a checklist of tasks to be completed during the 
-        onboarding process. Don't modify.
-      value: |
-        :clap: Welcome! :clap: Below are the checklist items that will drive the onboarding process. Please indicate the status and completion for each relevant onboarding task.
-
-        ## Assignee: Assessment Branch Director (Acting) @Bai-Li-NOAA
-        - [x] **Create an onboarding issue on GitHub [First Day]**: Create a new 
-        issue in the `nmfs-ost/on-off-boarding` repository.
-        - [ ] **Schedule a 1:1 welcome meeting [First Day]**: Review onboarding 
-        process and update the onboarding issue as they see fit. Provide an 
-        introduction to the NSAP.
-        [NSAP onboarding resources and links](https://docs.google.com/document/d/1YGP5NzoatWrk95D8GqouXTUzinqBq5KG8RBPjTNCUU4/edit?usp=sharing), 
-        (internal link).
-        - [ ] **Give access to program-level resources [First Week]**: Provide 
-        access to NSAP or higher-level email distribution lists, meetings, NSAP 
-        Shared Drive, and chat spaces.  
-        <details>
-          <summary>
-            Expand this section to see the list of resources:
-          </summary>
-
-        - [ ] Provide access to NSAP stand up meetings (optional based on 
-        activities, weekly on Mondays, [meeting notes](https://docs.google.com/document/d/1YLs7JLYAlzQaG2xDXxh9elUfUS-JvU0ShrQmJ-HuKQ8/edit#heading=h.g2wld1n2klxy))
-        - [ ] Provide access to NSAP space (Chat space for those at NSAP to ask 
-        questions and have discussions)
-        </details>
-
-        - [ ] **Sign Github user agreement [Second Week]**: Assessment Branch 
-        Director signs user agreement and sends back to new team member.
-
-        ## Assignee: Project Lead (@ GitHub handle here)
-        - [ ] **Schedule a 1:1 welcome meeting [First Day]**: Review onboarding 
-        process with project lead, if applicable. Provide an overview of the 
-        project.
-
-        ## Assignee: New Team Member
-        - [ ] **Write a short bio for the welcome email and complete the 
-        "NSAP Bios" doc [First Week]**: Send the bio to Assessment Branch Director.
-        Refer to the [bio email template](https://docs.google.com/document/d/1FbJwasO6lTAlg04wU2CHIq96_aoOo_g896_d907XCM8/edit?usp=sharing)
-        and the "NSAP Bios" [doc](https://docs.google.com/document/d/1_E8D4-m8F3FLYzGrYeZXm2NBDpMeroXb1miQxYf1wgo/edit?usp=sharing).
-        - [ ] **Contact IT to set up workstation [First Week]**: Have a working 
-        laptop and install software applications. POC: example@noaa.gov
-
-        <details>
-          <summary>
-            Expand this section to see the list of software applications (Other
-            NMFS-approved software applications can be found [here](https://docs.google.com/spreadsheets/d/1oPaTegdBGEmkjrmkbOVjGAJpPFg755p3Wws50ddLwCI/edit?usp=sharing)):
-          </summary>
-
-        - [ ] Git
-        - [ ] RStudio
-        </details>
-
-        Please mark the checklist items as complete as you progress through 
-        the onboarding process. If you have any questions, please feel free to 
-        comment on this issue or reach out to the relevant POCs listed above.
-        Please close this issue once all tasks are completed.
-        Thank you for your cooperation and welcome to the team!
-        :tada: :tada: :tada:
+      label: Collaborator's Full Name
+      description: The full name of the collaborator.
+      placeholder: Ex. Jane Doe
     validations:
-      required: false # This field is optional
+      required: true
 
+  - type: input
+    id: onboarding-date
+    attributes:
+      label: Desired Onboarding Date
+      description: When should the onboarding process begin (e.g., YYYY-MM-DD)? (optional)
+      placeholder: Ex. 2025-07-15
+    validations:
+      required: false
+  
+  - type: input
+    id: offboarding-date
+    attributes:
+      label: Desired Offboarding Date
+      description: When should the offboarding process begin (e.g., YYYY-MM-DD)? (optional)
+      placeholder: Ex. 2025-07-15
+    validations:
+      required: false
 
+  - type: textarea
+    id: role-affiliation
+    attributes:
+      label: Collaborator's Title and Affiliation
+      description: Briefly describe the collaborator's title and their department or affiliation.
+      placeholder: Ex. Fish Biologist, ST4 National Stock Assessment Program
+    validations:
+      required: true
+  
+  - type: textarea
+    id: biography
+    attributes:
+      label: Biography
+      description: Provide a brief, third-person biography for the public profile (optional).
+      placeholder: Ex. Jane Doe supports the National Stock Assessment Program on software projects...
+    validations:
+      required: false
+  
+  - type: input
+    id: email
+    attributes:
+      label: Professional Email
+      description: The email address to be listed on the profile (optional).
+      placeholder: Ex. jane.doe@noaa.gov
+    validations:
+      required: false
+
+  - type: input
+    id: github-username
+    attributes:
+      label: GitHub Username
+      description: The person's GitHub username (optional).
+      placeholder: Ex. jane-doe-noaa
+    validations:
+      required: false
+
+  - type: textarea
+    id: issue-instructions
+    attributes:
+      label: How to Use This Issue
+      description: Do not modify. These are instructions for using this issue to track progress.
+      value: |            
+        :bulb: **Tips**
+        - After this issue is created, onboarding or offboarding checklists may be added. Please mark items as complete as you progress.
+        - You can edit this issue to add more details about your progress by clicking the "..." button in the top-right corner of the issue. 
+        - If you have any questions or encounter any problems, please feel free to comment on this issue. 
+
+        :tada: :tada: :tada: Thank you for your cooperation and welcome aboard!
+    validations:
+      required: false 
+      
